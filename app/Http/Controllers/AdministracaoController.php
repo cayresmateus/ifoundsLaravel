@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ItemPerdidoController extends Controller
+class AdministracaoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
+    {   
         $itensPerdidos =[
             [
             'id'=>1,
@@ -60,9 +60,8 @@ class ItemPerdidoController extends Controller
             'descricao'=>'Carteira Preta',
             'localizacao'=>'Bloco F'
             ]
-        ]
-;
-        return view('index', ['itensPerdidos'=>$itensPerdidos]);
+        ];
+        return view('itens.index',['itensPerdidos'=>$itensPerdidos]);
     }
 
     /**
