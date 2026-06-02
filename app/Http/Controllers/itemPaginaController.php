@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 
-class ItemPerdidoController extends Controller
+class ItemPaginaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $itensPerdidos = Item::all();
+        $id = $request->route('id');
+        $item = Item::findOrFail($id);
 
-        return view('index', compact('itensPerdidos'));
+        return view('itens.paginaItem', compact('item'));
     }
 
     /**
@@ -30,14 +31,7 @@ class ItemPerdidoController extends Controller
      */
     public function store(Request $request)
     {
-        $item = new Item();
-        $item->nome = $request->nome;
-        $item->localizacao = $request->localizacao;
-        $item->descricao = $request->descricao;
-        $item->img = $request->file('imagem')->store('imagensItens','public');
-        $item->save();
-
-        return redirect('/itensperdidos');
+        //
     }
 
     /**

@@ -1,31 +1,51 @@
-<x-layout titulo="Admin" textoLadoImagem="Administração">
-  
-    <!--<div class="d-flex justify-content-between p-2 m-2"> 
-      
-    <button class="btn btn-primary p-2 m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
-      aria-controls="staticBackdrop">
-      Cadastrar
-    </button>
-      <a class="btn btn-danger p-2 m-2" href="/" role="button">Sair Pagina Admin</a> 
-    </div> -->
-    
-    @foreach($itensPerdidos as $item)
-    <a href="" class="card" >
-    <div class="col">
-      <div class="card_Box" name="{{$item['id']}}">
-        <div class="card_Img"> 
-          <img src="img/placeHolder.jpg" alt="Item Perdido Imagem">
-        </div>
-        <div class="card_Content">
-            <p class="card_Title">{{$item['titulo']}}</p>
-            <div class="card_Local">
-              <img src="img/iconLocation.png" alt="Localização" class="iconLocation">
-              <p> {{$item['localizacao']}}</p>
-            </div> 
-        </div>
-      </div>
-      </div>
-    </a>
-    @endforeach
+<x-layout titulo="Admin" textoLadoImagem="Administração" linkPagina="/admin">
+
+@if(session('sucesso'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('sucesso') }}
+       <a type="button" class="close" data-dismiss="alert" >
+            <p aria-hidden="true">&times;</p>
+       </a>
+    </div>
+@endif
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Localização</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($itensPerdidos as $item)
+        <tr>
+            <td>{{$item->nome}}</td>
+            <td>{{$item->descricao}}</td>
+            <td>{{$item->localizacao}}</td>
+            <td>
+                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$item->id}}">Editar</button>
+
+                <form action="/admin/deletar" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id" value="{{$item->id}}">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
+                        Deletar
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        <x-modalEditar :item="$item"/>
+        @endforeach
+    </tbody>
+  </table>
+
+  <x-slot:scripts>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+  </x-slot:scripts>
 
 </x-layout>
